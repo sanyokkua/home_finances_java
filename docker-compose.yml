@@ -1,0 +1,14 @@
+version: '2'
+
+services:
+  app_postgres_db:
+    image: postgres
+    restart: always
+    ports:
+      - '5402:5432'
+    environment:
+      POSTGRES_DB: app_finance_db
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: welcome
+    volumes:
+      - ./tmp/app_finance_db:/var/lib/postgresql/data
