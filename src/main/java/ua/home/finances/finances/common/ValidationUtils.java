@@ -2,10 +2,7 @@ package ua.home.finances.finances.common;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.validator.routines.EmailValidator;
-import ua.home.finances.finances.common.exceptions.AppUserValidationException;
-import ua.home.finances.finances.common.exceptions.ParamValidationException;
-import ua.home.finances.finances.common.exceptions.PurchaseValidationException;
-import ua.home.finances.finances.common.exceptions.UserAuthInfoValidationException;
+import ua.home.finances.finances.common.exceptions.*;
 import ua.home.finances.finances.db.models.AppUser;
 import ua.home.finances.finances.db.models.Purchase;
 import ua.home.finances.finances.db.models.PurchaseList;
@@ -28,10 +25,10 @@ public final class ValidationUtils {
 
     public static void validateEmail(String email) {
         if (StringUtils.isBlank(email)) {
-            throw new UserAuthInfoValidationException("EMAIL is blank");
+            throw new ParamValidationException("EMAIL is blank");
         }
         if (!EmailValidator.getInstance().isValid(email)) {
-            throw new UserAuthInfoValidationException("EMAIL is not valid");
+            throw new ParamValidationException("EMAIL is not valid");
         }
     }
 
@@ -70,13 +67,13 @@ public final class ValidationUtils {
 
     public static void validatePurchaseList(PurchaseList purchaseList) {
         if (Objects.isNull(purchaseList)) {
-            throw new PurchaseValidationException("PurchaseList is null");
+            throw new PurchaseListValidationException("PurchaseList is null");
         }
         if (Objects.isNull(purchaseList.getListUserId()) || purchaseList.getListUserId() < 0) {
-            throw new PurchaseValidationException("PurchaseList USER ID should be valid positive LONG");
+            throw new PurchaseListValidationException("PurchaseList USER ID should be valid positive LONG");
         }
         if (StringUtils.isBlank(purchaseList.getName())) {
-            throw new PurchaseValidationException("PurchaseList NAME is blank");
+            throw new PurchaseListValidationException("PurchaseList NAME is blank");
         }
     }
 
