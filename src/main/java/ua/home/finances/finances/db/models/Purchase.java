@@ -7,13 +7,16 @@ import lombok.NoArgsConstructor;
 import ua.home.finances.finances.common.Currency;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class Purchase {
-    private Long id;
+    public static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ISO_DATE; // 2011-12-03
+    private Long purchaseId;
+    private Long purchaseListId;
     private String name;
     private long coins;
     private Currency currency;

@@ -5,14 +5,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ua.home.finances.finances.api.dto.UpdatePurchaseDto;
 import ua.home.finances.finances.db.models.Purchase;
-import ua.home.finances.finances.services.PurchaseServiceApi;
 
 @RestController
 @RequestMapping("/api/v1/purchases")
 @RequiredArgsConstructor
 public class RestPurchaseController {
 
-    private final PurchaseServiceApi purchaseServiceApi;
+//    private final PurchaseServiceApi purchaseServiceApi;
 
     @PostMapping("/")
     public ResponseEntity<Purchase> create(@RequestBody UpdatePurchaseDto purchaseDto) {
