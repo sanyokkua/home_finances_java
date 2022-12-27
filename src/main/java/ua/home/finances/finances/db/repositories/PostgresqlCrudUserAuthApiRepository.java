@@ -81,4 +81,17 @@ public class PostgresqlCrudUserAuthApiRepository implements CrudUserAuthApi {
         var queryResult = namedParameterJdbcTemplate.query(sql, params, new UserAuthInfoRowMapper());
         return Optional.ofNullable(queryResult).stream().flatMap(List::stream).findAny();
     }
+
+    @Override
+    public Optional<UserAuthInfo> findUserAuthInfoById(long id) {
+        ValidationUtils.validateParamCommon(() -> id < 0, "Id is not valid");
+
+        val params = Map.of("id", id);
+        val sql = """
+                SELECT * FROM "app_finance"."user_auth" WHERE "u_id" = :id
+                """;
+
+        var queryResult = namedParameterJdbcTemplate.query(sql, params, new UserAuthInfoRowMapper());
+        return Optional.ofNullable(queryResult).stream().flatMap(List::stream).findAny();
+    }
 }

@@ -10,7 +10,7 @@ import ua.home.finances.finances.db.repositories.api.CrudUserAuthApi;
 import static org.junit.jupiter.api.Assertions.*;
 
 @Testcontainers
-class PostgresqlCrudAppUserAuthApiRepositoryTests extends AbstractRepositoryTests {
+class PostgresqlCrudUserAuthApiRepositoryTests extends AbstractRepositoryTests {
 
     private CrudUserAuthApi crudUserAuthApi;
 
@@ -112,5 +112,28 @@ class PostgresqlCrudAppUserAuthApiRepositoryTests extends AbstractRepositoryTest
         assertTrue(user3Optional.isPresent());
         assertTrue(user4Optional.isPresent());
         assertTrue(nonExistingUser.isEmpty());
+    }
+
+    @Test
+    void testFindUserById() {
+        var userEmail = "testFindUserById@gmail.com";
+        var userPassword = "user_password";
+
+        var userAuthInfoOptional = crudUserAuthApi.findUserAuthInfoByEmail(userEmail);
+        assertTrue(userAuthInfoOptional.isEmpty());
+
+        var isUserAuthInfoCreated = crudUserAuthApi.createUserAuthInfo(
+                UserAuthInfo.builder().email(userEmail).password(userPassword).build());
+        assertTrue(isUserAuthInfoCreated);
+
+        var createdUserOptional = crudUserAuthApi.findUserAuthInfoByEmail(userEmail);
+        assertTrue(createdUserOptional.isPresent());
+        assertEquals(userEmail, createdUserOptional.get().getEmail());
+        assertEquals(userPassword, createdUserOptional.get().getPassword());
+
+        var userById = crudUserAuthApi.findUserAuthInfoById(createdUserOptional.get().getUserId());
+        assertTrue(userById.isPresent());
+        assertEquals(userEmail, userById.get().getEmail());
+        assertEquals(userPassword, userById.get().getPassword());
     }
 }

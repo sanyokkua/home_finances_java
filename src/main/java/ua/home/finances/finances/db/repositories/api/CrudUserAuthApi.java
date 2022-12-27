@@ -13,4 +13,6 @@ public interface CrudUserAuthApi {
     boolean deleteUserAuthInfo(long id);
 
     Optional<UserAuthInfo> findUserAuthInfoByEmail(String email);
+
+    Optional<UserAuthInfo> findUserAuthInfoById(long id);
 }

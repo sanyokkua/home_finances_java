@@ -1,5 +1,7 @@
 package ua.home.finances.finances.common;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.validator.routines.EmailValidator;
 import ua.home.finances.finances.common.exceptions.*;
@@ -11,6 +13,7 @@ import ua.home.finances.finances.db.models.UserAuthInfo;
 import java.util.Objects;
 import java.util.function.BooleanSupplier;
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class ValidationUtils {
 
     public static void validateUserAuth(UserAuthInfo userAuthInfo) {

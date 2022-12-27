@@ -1,4 +1,4 @@
-package ua.home.finances.finances.common.dtos;
+package ua.home.finances.finances.services.dtos;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -66,7 +66,9 @@ public class PostgresqlCrudPurchaseListApiRepository implements CrudPurchaseList
         val params = Map.of("userId",   userId,
                             "id",       listId);
         // @formatter:on
-        val sql = "DELETE FROM " app_finance "." list " WHERE " l_id " = :id AND " l_u_id " = :userId";
+        val sql = """
+                DELETE FROM "app_finance"."list" WHERE "l_id" = :id AND "l_u_id" = :userId
+                """;
         val updatedRows = namedParameterJdbcTemplate.update(sql, params);
         return updatedRows > 0;
     }

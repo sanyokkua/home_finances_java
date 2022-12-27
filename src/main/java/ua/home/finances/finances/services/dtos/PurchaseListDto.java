@@ -1,4 +1,4 @@
-package ua.home.finances.finances.common.dtos;
+package ua.home.finances.finances.services.dtos;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,5 +10,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PurchaseListDto {
+    private Long listId;
     private String name;
 }

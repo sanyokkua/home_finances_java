@@ -13,4 +13,6 @@ public interface CrudAppUserApi {
     boolean deleteAppUser(long id);
 
     Optional<AppUser> findAppUserByNickname(String nickname);
+
+    Optional<AppUser> findAppUserById(long id);
 }

@@ -131,4 +131,15 @@ class PostgresqlCrudAppUserApiRepositoryTests extends AbstractRepositoryTests {
         var foundNonExistingUserOptional = crudAppUserApi.findAppUserByNickname("notExisting");
         assertTrue(foundNonExistingUserOptional.isEmpty());
     }
+
+    @Test
+    void testFindUserById() {
+        var foundUser1Optional = crudAppUserApi.findAppUserByNickname("user1");
+        assertTrue(foundUser1Optional.isPresent());
+
+        var foundUser2Optional = crudAppUserApi.findAppUserById(foundUser1Optional.get().getUserId());
+        assertTrue(foundUser2Optional.isPresent());
+
+        assertEquals(foundUser1Optional.get().getNickname(), foundUser2Optional.get().getNickname());
+    }
 }
