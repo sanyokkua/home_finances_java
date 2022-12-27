@@ -72,6 +72,8 @@ class ValidationUtilsTests {
                                                                                                        .currency(
                                                                                                                Currency.USD)
                                                                                                        .coins(10000L)
+                                                                                                       .category(
+                                                                                                               "default")
                                                                                                        .build()));
     }
 
@@ -86,6 +88,8 @@ class ValidationUtilsTests {
                                                                                                        .currency(
                                                                                                                Currency.USD)
                                                                                                        .coins(10000L)
+                                                                                                       .category(
+                                                                                                               "default")
                                                                                                        .build()));
     }
 
@@ -99,6 +103,8 @@ class ValidationUtilsTests {
                                                                                                        .date(LocalDate.now())
                                                                                                        .currency(null)
                                                                                                        .coins(10000L)
+                                                                                                       .category(
+                                                                                                               "default")
                                                                                                        .build()));
     }
 
@@ -113,16 +119,30 @@ class ValidationUtilsTests {
                                                                                                        .currency(
                                                                                                                Currency.USD)
                                                                                                        .coins(10000L)
+                                                                                                       .category(
+                                                                                                               "default")
                                                                                                        .build()));
     }
 
     @Test
-    void testValidatePurchaseWithIncorrectCoins() {
+    void testValidatePurchaseWithEmptyCategory() {
         assertThrows(PurchaseValidationException.class, () -> ValidationUtils.validatePurchase(Purchase.builder()
                                                                                                        .purchaseId(null)
                                                                                                        .purchaseListId(
                                                                                                                100L)
                                                                                                        .name("purchase-name")
+                                                                                                       .date(LocalDate.now())
+                                                                                                       .currency(
+                                                                                                               Currency.USD)
+                                                                                                       .coins(10000L)
+                                                                                                       .category("   ")
+                                                                                                       .build()));
+    }
+
+    @Test
+    void testValidatePurchaseWithIncorrectCoins() {
+        assertThrows(PurchaseValidationException.class, () -> ValidationUtils.validatePurchase(
+                Purchase.builder().purchaseId(null).purchaseListId(100L).name("purchase-name")
                                                                                                        .date(LocalDate.now())
                                                                                                        .currency(
                                                                                                                Currency.USD)

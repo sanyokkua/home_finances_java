@@ -21,6 +21,7 @@ public class PurchaseRowMapper implements RowMapper<Purchase> {
                 .coins(rs.getLong("p_coins"))
                 .currency(Currency.valueOf(currencyValue))
                 .date(sqlDate.toLocalDate())
+                .category(rs.getString("p_category"))
                 .build();
     }
 }

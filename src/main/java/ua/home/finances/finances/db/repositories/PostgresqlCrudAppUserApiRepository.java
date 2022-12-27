@@ -26,9 +26,12 @@ public class PostgresqlCrudAppUserApiRepository implements CrudAppUserApi {
     public boolean createAppUser(AppUser appUserAuthInfo) {
         ValidationUtils.validateAppUser(appUserAuthInfo);
 
-        val params = Map.of("userId", appUserAuthInfo.getUserId(), "nickname", appUserAuthInfo.getNickname());
+        // @formatter:off
+        val params = Map.of("userId",   appUserAuthInfo.getUserId(),
+                            "nickname", appUserAuthInfo.getNickname());
+        // @formatter:on
         val sql = """
-                INSERT INTO app_finance."user" (u_id, u_nickname)
+                INSERT INTO "app_finance"."user" ("u_id", "u_nickname")
                 VALUES (:userId, :nickname)
                 ON CONFLICT DO NOTHING
                 """;
@@ -40,11 +43,14 @@ public class PostgresqlCrudAppUserApiRepository implements CrudAppUserApi {
     public boolean updateAppUser(AppUser appUserAuthInfo) {
         ValidationUtils.validateAppUser(appUserAuthInfo);
 
-        val params = Map.of("userId", appUserAuthInfo.getUserId(), "nickname", appUserAuthInfo.getNickname());
+        // @formatter:off
+        val params = Map.of("userId",   appUserAuthInfo.getUserId(),
+                            "nickname", appUserAuthInfo.getNickname());
+        // @formatter:on
         val sql = """
-                UPDATE app_finance."user"
-                SET  u_nickname = :nickname
-                WHERE u_id = :userId
+                UPDATE "app_finance"."user"
+                SET  "u_nickname" = :nickname
+                WHERE "u_id" = :userId
                 """;
         val updatedRows = namedParameterJdbcTemplate.update(sql, new MapSqlParameterSource(params));
         return updatedRows > 0;
@@ -55,7 +61,9 @@ public class PostgresqlCrudAppUserApiRepository implements CrudAppUserApi {
         ValidationUtils.validateParamCommon(() -> id < 0, "AppUser ID should be >=0");
 
         val params = Map.of("id", id);
-        val sql = "DELETE FROM app_finance.\"user\" WHERE u_id = :id";
+        val sql = """
+                DELETE FROM "app_finance"."user" WHERE "u_id" = :id
+                """;
         val updatedRows = namedParameterJdbcTemplate.update(sql, params);
         return updatedRows > 0;
     }
@@ -65,7 +73,9 @@ public class PostgresqlCrudAppUserApiRepository implements CrudAppUserApi {
         ValidationUtils.validateParamCommon(() -> StringUtils.isBlank(nickname), "Nickname is blank");
 
         val params = Map.of("nickname", nickname);
-        val sql = "SELECT * FROM app_finance.\"user\" WHERE u_nickname = :nickname";
+        val sql = """
+                SELECT * FROM "app_finance"."user" WHERE "u_nickname" = :nickname
+                """;
 
         var queryResult = namedParameterJdbcTemplate.query(sql, params, new AppUserRowMapper());
         return Optional.ofNullable(queryResult).stream().flatMap(List::stream).findAny();

@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Testcontainers
-class PostgresqlCrudPurchaseListApiRepositoryTests extends AbstractRepositoryTests {
+class PostgresqlCrudPurchaseListServiceRepositoryTests extends AbstractRepositoryTests {
     private CrudPurchaseListApi crudPurchaseListApi;
     private CrudAppUserApi crudAppUserApi;
 

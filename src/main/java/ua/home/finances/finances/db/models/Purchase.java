@@ -21,4 +21,5 @@ public class Purchase {
     private long coins;
     private Currency currency;
     private LocalDate date;
+    private String category;
 }

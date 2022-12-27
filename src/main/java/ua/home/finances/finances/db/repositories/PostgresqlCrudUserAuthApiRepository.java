@@ -26,9 +26,12 @@ public class PostgresqlCrudUserAuthApiRepository implements CrudUserAuthApi {
     public boolean createUserAuthInfo(UserAuthInfo userAuthInfo) {
         ValidationUtils.validateUserAuth(userAuthInfo);
 
-        val params = Map.of("email", userAuthInfo.getEmail(), "password", userAuthInfo.getPassword());
+        // @formatter:off
+        val params = Map.of("email",    userAuthInfo.getEmail(),
+                            "password", userAuthInfo.getPassword());
+        // @formatter:on
         val sql = """
-                INSERT INTO app_finance.user_auth (u_email, u_password)
+                INSERT INTO "app_finance"."user_auth" ("u_email", "u_password")
                 VALUES (:email, :password)
                 ON CONFLICT DO NOTHING
                 """;
@@ -40,12 +43,15 @@ public class PostgresqlCrudUserAuthApiRepository implements CrudUserAuthApi {
     public boolean updateUserAuthInfo(UserAuthInfo userAuthInfo) {
         ValidationUtils.validateUserAuth(userAuthInfo);
 
-        val params = Map.of("email", userAuthInfo.getEmail(), "password", userAuthInfo.getPassword(), "id",
-                            userAuthInfo.getUserId());
+        // @formatter:off
+        val params = Map.of("email",    userAuthInfo.getEmail(),
+                            "password", userAuthInfo.getPassword(),
+                            "id",       userAuthInfo.getUserId());
+        // @formatter:on
         val sql = """
-                UPDATE app_finance.user_auth
-                SET  u_email = :email, u_password = :password
-                WHERE u_id = :id
+                UPDATE "app_finance"."user_auth"
+                SET  "u_email" = :email, "u_password" = :password
+                WHERE "u_id" = :id
                 """;
         val updatedRows = namedParameterJdbcTemplate.update(sql, new MapSqlParameterSource(params));
         return updatedRows > 0;
@@ -56,7 +62,9 @@ public class PostgresqlCrudUserAuthApiRepository implements CrudUserAuthApi {
         ValidationUtils.validateParamCommon(() -> id < 0, "UserAuthInfo ID should be >=0");
 
         val params = Map.of("id", id);
-        val sql = "DELETE FROM app_finance.user_auth WHERE u_id = :id";
+        val sql = """
+                DELETE FROM "app_finance"."user_auth" WHERE "u_id" = :id
+                """;
         val updatedRows = namedParameterJdbcTemplate.update(sql, params);
         return updatedRows > 0;
     }
@@ -66,7 +74,9 @@ public class PostgresqlCrudUserAuthApiRepository implements CrudUserAuthApi {
         ValidationUtils.validateEmail(email);
 
         val params = Map.of("email", email);
-        val sql = "SELECT * FROM app_finance.user_auth WHERE u_email = :email";
+        val sql = """
+                SELECT * FROM "app_finance"."user_auth" WHERE "u_email" = :email
+                """;
 
         var queryResult = namedParameterJdbcTemplate.query(sql, params, new UserAuthInfoRowMapper());
         return Optional.ofNullable(queryResult).stream().flatMap(List::stream).findAny();

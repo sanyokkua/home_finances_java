@@ -63,6 +63,9 @@ public final class ValidationUtils {
         if (purchase.getCoins() < 0) {
             throw new PurchaseValidationException("Purchase COINS should be >= 0");
         }
+        if (StringUtils.isBlank(purchase.getCategory())) {
+            throw new PurchaseValidationException("Purchase CATEGORY is blank");
+        }
     }
 
     public static void validatePurchaseList(PurchaseList purchaseList) {

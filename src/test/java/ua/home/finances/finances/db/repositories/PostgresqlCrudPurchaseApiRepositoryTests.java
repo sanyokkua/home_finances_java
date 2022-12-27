@@ -28,6 +28,7 @@ class PostgresqlCrudPurchaseApiRepositoryTests extends AbstractRepositoryTests {
                 .currency(Currency.USD)
                 .name(name)
                 .date(LocalDate.now())
+                .category("default")
                 .build();
     }
 
