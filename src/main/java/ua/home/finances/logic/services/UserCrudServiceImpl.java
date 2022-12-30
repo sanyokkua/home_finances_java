@@ -11,6 +11,8 @@ import ua.home.finances.logic.services.api.Result;
 import ua.home.finances.logic.services.api.UserCrudService;
 import ua.home.finances.logic.services.dtos.UserDto;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class UserCrudServiceImpl implements UserCrudService {
@@ -70,5 +72,10 @@ public class UserCrudServiceImpl implements UserCrudService {
         val user = foundAppUser.get();
         user.setPassword("");
         return UserDto.fromModel(user);
+    }
+
+    @Override
+    public List<UserDto> findAll() {
+        return userCrudJdbcRepository.findAll().stream().map(UserDto::fromModel).toList();
     }
 }

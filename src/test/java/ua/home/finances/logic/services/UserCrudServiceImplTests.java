@@ -9,15 +9,16 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import ua.home.finances.logic.common.exceptions.UserIsNotFoundException;
 import ua.home.finances.logic.db.models.ApplicationUser;
 import ua.home.finances.logic.db.repositories.api.ApplicationUserCrudJdbcRepository;
 import ua.home.finances.logic.services.api.Result;
 import ua.home.finances.logic.services.dtos.UserDto;
 
+import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
@@ -45,10 +46,8 @@ class UserCrudServiceImplTests {
 
     @Test
     void testCreateUser() {
-        // @formatter:off
         when(mockPasswordEncoder.encode(anyString())).thenReturn("password");
         when(mockUserRepository.create(any(ApplicationUser.class))).thenReturn(TEST_APPLICATION_USER);
-        
 
         val res = userService.create(TEST_USER_DTO);
 
@@ -60,7 +59,7 @@ class UserCrudServiceImplTests {
     @Test
     void testUpdateUser() {
         when(mockUserRepository.update(any(ApplicationUser.class))).thenReturn(TEST_APPLICATION_USER);
-        
+
         val res = userService.update(TEST_USER_DTO);
 
         assertEquals("", res.getPassword());
@@ -81,6 +80,30 @@ class UserCrudServiceImplTests {
     }
 
     @Test
+    void testFindById() {
+        when(mockUserRepository.findById(anyLong())).thenReturn(Optional.of(TEST_APPLICATION_USER));
+
+        val res = userService.findById(1000L);
+
+        verify(mockUserRepository, atMostOnce()).findById(anyLong());
+
+        assertEquals(TEST_APPLICATION_USER.getEmail(), res.getEmail());
+        assertEquals(TEST_APPLICATION_USER.getUserId(), res.getUserId());
+        assertEquals(TEST_APPLICATION_USER.getUserId(), res.getUserId());
+        assertEquals(TEST_APPLICATION_USER.getNickname(), res.getNickname());
+        assertTrue(StringUtils.isBlank(res.getPassword()));
+    }
+
+    @Test
+    void testFindByIdNotFound() {
+        when(mockUserRepository.findById(anyLong())).thenReturn(Optional.empty());
+
+        assertThrows(UserIsNotFoundException.class, () -> userService.findById(1000L));
+
+        verify(mockUserRepository, atMostOnce()).findById(anyLong());
+    }
+
+    @Test
     void testFindUserByEmail() {
         when(mockUserRepository.findByEmail(anyString())).thenReturn(Optional.of(TEST_APPLICATION_USER));
 
@@ -93,5 +116,24 @@ class UserCrudServiceImplTests {
         assertEquals(TEST_APPLICATION_USER.getUserId(), res.getUserId());
         assertEquals(TEST_APPLICATION_USER.getNickname(), res.getNickname());
         assertTrue(StringUtils.isBlank(res.getPassword()));
+    }
+
+    @Test
+    void testFindUserByEmailNotFound() {
+        when(mockUserRepository.findByEmail(anyString())).thenReturn(Optional.empty());
+
+        assertThrows(UserIsNotFoundException.class, () -> userService.findUserByEmail("user@email.com"));
+
+        verify(mockUserRepository, atMostOnce()).findByEmail(anyString());
+    }
+
+    @Test
+    void testFindAll() {
+        when(mockUserRepository.findAll()).thenReturn(List.of(TEST_APPLICATION_USER));
+
+        val res = userService.findAll();
+
+        verify(mockUserRepository, atMostOnce()).findAll();
+        assertFalse(res.isEmpty());
     }
 }
