@@ -9,10 +9,10 @@ import ua.home.finances.web.app.dtos.RespPurchaseListDto;
 import java.security.Principal;
 
 public interface PurchaseListController {
-    ResponseEntity<RespPurchaseListDto> createList(Principal principal, ReqBodyPurchaseListDto purchaseDto);
+    ResponseEntity<RespPurchaseListDto> createList(Principal principal, ReqBodyPurchaseListDto purchaseReqListDto);
 
     ResponseEntity<RespPurchaseListDto> updateList(Principal principal, long listId,
-                                                   ReqBodyPurchaseListDto purchaseDto);
+                                                   ReqBodyPurchaseListDto purchaseReqListDto);
 
     ResponseEntity<DeleteResults> deleteList(Principal principal, long listId);
 

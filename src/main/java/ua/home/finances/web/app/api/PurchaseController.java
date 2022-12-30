@@ -8,10 +8,10 @@ import ua.home.finances.web.app.dtos.RespPurchaseDto;
 
 import java.security.Principal;
 
-interface PurchaseController {
+public interface PurchaseController {
     ResponseEntity<RespPurchaseDto> createPurchase(Principal principal, long listId, ReqBodyPurchaseDto purchase);
 
-    ResponseEntity<RespPurchaseDto> updatePurchase(Principal principal, long listId, long purchaseListId,
+    ResponseEntity<RespPurchaseDto> updatePurchase(Principal principal, long listId, long purchaseId,
                                                    ReqBodyPurchaseDto purchase);
 
     ResponseEntity<DeleteResults> deletePurchase(Principal principal, long listId, long purchaseId);
